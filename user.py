@@ -6,6 +6,14 @@ class Sender(ABC):
     def __init__(self):
         self.whoFollowMe = set()  # Initialize as an empty set
 
+    @abstractmethod
+    def follow(self, user):
+        pass
+
+    @abstractmethod
+    def unfollow(self, user):
+        pass
+
     def notify(self, message):
         for member in self.whoFollowMe:
             member.update(message)
@@ -31,22 +39,30 @@ class User(Sender, Member):
         return f"User name: {self.username}, Number of posts: {self.numberOfPost}, Number of followers: {len(self.whoFollowMe)}"
 
     def follow(self, user):
-        # if self.username not in user.whoFollowMe:
-        user.whoFollowMe.add(self)  # added the name of the user who follows you to the list
-        print(f"{self.username} started following {user.username}")
+        if self.connect is True:
+            # if self.username not in user.whoFollowMe:
+            user.whoFollowMe.add(self)  # added the name of the user who follows you to the list
+            print(f"{self.username} started following {user.username}")
+        else:
+            raise ConnectionError("You are not connected to the network, so you will not be able to make changes")
 
     def unfollow(self, user):
-        if self in user.whoFollowMe:
-            user.whoFollowMe.remove(self)  # removed the name of the user who follows you to the list
-            print(f"{self.username} unfollowed {user.username}")
+        if self.connect is True:
+            if self in user.whoFollowMe:
+                user.whoFollowMe.remove(self)  # removed the name of the user who follows you to the list
+                print(f"{self.username} unfollowed {user.username}")
+        else:
+            raise ConnectionError("You are not connected to the network, so you will not be able to make changes")
 
-    def publish_post(self, post_type, *args):
-        # for i in self.whoFollowMe:
-        #     i.receivedPost.append(f"{self.username} has a new post")
-        self.notify(message=f"{self.username} has a new post")
-        self.numberOfPost += 1
-        return PostFactory.create_post(self, post_type, *args)
-
+    def publish_post(self, post_type, product=None, cost=None, location=None):
+        if self.connect is True:
+            # for i in self.whoFollowMe:
+            #     i.receivedPost.append(f"{self.username} has a new post")
+            self.notify(message=f"{self.username} has a new post")
+            self.numberOfPost += 1
+            return PostFactory.create_post(self, post_type, product, cost, location)
+        else:
+            raise ConnectionError("You are not connected to the network, so you will not be able to make changes")
     def print_notifications(self):
         print(f"{self.username}'s notifications:")
         for i in self.receivedPost:
