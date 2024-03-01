@@ -1,5 +1,13 @@
 from user import User
 
+'''
+I added an error alert that will pop up to the user in the sign_up function.
+It will be written to the user what errors he made:
+"There is already such a username on the network"
+or
+"The password is not the right length"
+'''
+
 
 class SocialNetwork:
     __instance = None
@@ -55,7 +63,6 @@ u2 = network.sign_up("Bob", "pass2")
 u3 = network.sign_up("Charlie", "pass3")
 u4 = network.sign_up("David", "pass4")
 u5 = network.sign_up("Eve", "pass5")
-
 
 # Creating followers
 u1.follow(u2)
