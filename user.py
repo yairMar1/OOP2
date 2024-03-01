@@ -5,7 +5,11 @@ from Post import PostFactory
  I added a message alert in an extreme case in several functions:
  follow, unfollow, publish_post.
  "An attempt to change the network when not connected to the network"
- '''
+
+ In the "publish_post" function, if I hadn't used the "observer" formatting method,
+ I would have written the two lines marked in the comment.
+ They would have already sent all my followers a notification that I posted
+'''
 
 
 class Sender(ABC):
@@ -60,8 +64,8 @@ class User(Sender, Member):
     def publish_post(self, post_type, content=None, cost=None, location=None):
         if self.connect is False:
             raise ConnectionError("You are not connected to the network, so you will not be able to make changes")
-            # for i in self.whoFollowMe:
-            #     i.receivedPost.append(f"{self.username} has a new post")
+        # for i in self.whoFollowMe:
+        #     i.receivedPost.append(f"{self.username} has a new post")
         self.notify(message=f"{self.username} has a new post")
         self.numberOfPost += 1
         return PostFactory.create_post(self, post_type, content, cost, location)
