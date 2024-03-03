@@ -57,7 +57,7 @@ class ImagePost(Post, ABC):
             plt.show()
             print("Shows picture")
         except Exception as e:
-            print("Error loading or displaying the image:", e)
+            raise FileNotFoundError("Error loading or displaying the image:", e)
 
     def __str__(self):
         return f"{self.user.username} posted a picture\n"
