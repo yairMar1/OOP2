@@ -9,6 +9,7 @@ or
 '''
 
 
+# Creating a network, using the singleton design method
 class SocialNetwork:
     __instance = None
     __is_initialized = False
@@ -32,7 +33,7 @@ class SocialNetwork:
             result += str(user) + "\n"
         return result
 
-    def sign_up(self, username, password):
+    def sign_up(self, username, password):  # Network registration
         if username not in self.users:
             if 4 <= len(password) & len(password) <= 8:
                 new_user = User(username, password, True)
@@ -43,12 +44,12 @@ class SocialNetwork:
         else:
             raise ValueError(f"Username {username} is already in use")
 
-    def log_out(self, username):
+    def log_out(self, username):  # Disconnecting from the network
         if username in self.users:
             self.users[username].connect = False
         print(f"{username} disconnected")
 
-    def log_in(self, username, password):
+    def log_in(self, username, password):  # Connecting to the network (after registering for the network)
         if username in self.users and self.users[username].password == password:
             self.users[username].connect = True
         print(f"{username} connected")
